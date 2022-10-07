@@ -30,13 +30,20 @@ class Hangman {
    * @param {string} difficulty a difficulty string to be passed to the getRandomWord Function
    * @param {function} next callback function to be called after a word is reveived from the API.
    */
-  start(difficulty, next) {
+  async start(difficulty, next) {
     // get word and set it to the class's this.word
+    this.word = await this.getRandomWord(difficulty);
     // clear canvas
+    this.clearCanvas();
     // draw base
+    this.drawBase();
     // reset this.guesses to empty array
+    this.guesses = [];
     // reset this.isOver to false
+    this.isOver = false;
     // reset this.didWin to false
+    this.didWin = false;
+
   }
 
   /**
@@ -44,8 +51,29 @@ class Hangman {
    * @param {string} letter the guessed letter.
    */
   guess(letter) {
+    this.letter = letter;
+
     // Check if nothing was provided and throw an error if so
+    try {
+      if(letter.length < 1)
+      {
+        throw new Error("Needs to be a letter, (a,b,c,d,e,f...)");
+      }
+
+
+
+
+    } catch(error) {
+      
+    }
+
+
+
     // Check for invalid cases (numbers, symbols, ...) throw an error if it is
+    
+      
+    
+    
     // Check if more than one letter was provided. throw an error if it is.
     // if it's a letter, convert it to lower case for consistency.
     // check if this.guesses includes the letter. Throw an error if it has been guessed already.
