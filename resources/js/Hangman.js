@@ -53,39 +53,72 @@ class Hangman {
   guess(letter) {
     this.letter = letter;
 
-    // Check if nothing was provided and throw an error if so
+    // Check if nothing was provided and throw an error if so   // Check if more than one letter was provided. throw an error if it is.
+
     try {
-      if(letter.length < 1)
+      if(letter.length < 1 || letter.length > 1)
       {
-        throw new Error("Needs to be a letter, (a,b,c,d,e,f...)");
+        throw new Error("Enter 1 letter, (a,b,c,d,e,f...)");
       }
 
-
-
-
-    } catch(error) {
-      
+    // Check for invalid cases (numbers, symbols, ...) throw an error if it is
+    if(!letter.match(a-zA-Z))
+    {
+      throw new Error("No Symbols, enter a letter, (a,b,c,d,e,f...)");
+    }
+    
+    // if it's a letter, convert it to lower case for consistency.
+    if(letter.match(a-zA-Z))
+    {
+      letter = letter.toLowerCase();
     }
 
-
-
-    // Check for invalid cases (numbers, symbols, ...) throw an error if it is
-    
-      
-    
-    
-    // Check if more than one letter was provided. throw an error if it is.
-    // if it's a letter, convert it to lower case for consistency.
     // check if this.guesses includes the letter. Throw an error if it has been guessed already.
-    // add the new letter to the guesses array.
+    if(!this.guesses.includes(letter))
+    {
+      // add the new letter to the guesses array.
+      this.guesses.push(letter);
+    }
+    else
+    {
+      throw new Error("This letter has already been guessed!");
+    }
+
     // check if the word includes the guessed letter:
     //    if it's is call checkWin()
     //    if it's not call onWrongGuess()
+    if(this.word.includes(letter))
+    {
+      this.checkWin();
+    }
+    else
+    {
+      this.onWrongGuess();
+    }
+
+  
+    } catch(error) {
+      console.error(error);
+    }
+    
   }
 
   checkWin() {
     // using the word and the guesses array, figure out how many remaining unknowns.
     // if zero, set both didWin, and isOver to true
+    
+    var howMany = 0;
+    var letterGuesses = this.word.split("");   
+    var letterGuessesArray = new Array(this.word.split(""));                                                 
+    letterGuesses = letterGuesses.filter(lettersLeft => this.guesses.includes(lettersLeft)).length;
+    howMany = (letterGuessesArray.length - letterGuesses.length);
+
+    if (howMany == 0)
+    {
+      this.isOver = true;
+      this.didWin = true;
+    }
+
   }
 
   /**
@@ -93,7 +126,43 @@ class Hangman {
    * drawHead, drawBody, drawRightArm, drawLeftArm, drawRightLeg, or drawLeftLeg.
    * if the number wrong guesses is 6, then also set isOver to true and didWin to false.
    */
-  onWrongGuess() {}
+  onWrongGuess() {
+    var userGuesses = this.guesses;
+
+    if(userGuesses.length == 1)
+    {
+      this.drawHead();
+    }
+
+    if(userGuesses.length == 2)
+    {
+      this.drawBody();
+    } 
+    
+    if(userGuesses.length == 3)
+    {
+      this.drawRightArm();
+    } 
+    
+    if(userGuesses.length == 4)
+    {
+      this.drawLeftArm();
+    } 
+    
+    if(userGuesses.length == 5)
+    {
+      this.drawRightLeg();
+    } 
+    
+    if(userGuesses.length == 6)
+    {
+      this.drawLeftLeg();
+
+      this.isOver = true;
+      this.didWin = false;
+    }
+
+  }
 
   /**
    * This function will return a string of the word placeholder
@@ -101,7 +170,22 @@ class Hangman {
    * i.e.: if the word is BOOK, and the letter O has been guessed, this would return _ O O _
    */
   getWordHolderText() {
-    return;
+    const wordHolder = [];
+
+    for(var i =0; i < this.word.length(); i++)
+    {
+      if(this.word.includes(guess)) 
+      {
+        wordHolder.push(this.guess)
+      }
+
+      else
+      {
+        wordHolder.push("_");
+      }
+    }
+
+    return wordHolder;
   }
 
   /**
@@ -111,7 +195,7 @@ class Hangman {
    * Hint: use the Array.prototype.join method.
    */
   getGuessesText() {
-    return ``;
+    return this.guesses.join(", ");
   }
 
   /**
@@ -131,15 +215,42 @@ class Hangman {
     this.ctx.fillRect(10, 410, 175, 10); // Base
   }
 
-  drawHead() {}
 
-  drawBody() {}
+  //https://gamedevelopment.tutsplus.com/tutorials/how-to-create-an-html5-hangman-game-with-canvas-the-basic-gameplay--pre-28764
+  drawHead() {
+    this.ctx.beginPath();
+    this.ctx.arc(180,120,23,0,Math.PI*2,false);
+    this.ctx.closePath();
+    this.ctx.stroke();
+  }
 
-  drawLeftArm() {}
+  drawBody() {
+    this.ctx.moveTo(180,143);
+    this.ctx.lineTo(180,248);
+    this.ctx.stroke();
+  }
 
-  drawRightArm() {}
+  drawLeftArm() {
+    this.ctx.moveTo(180,175);
+    this.ctx.lineTo(142,167);
+    this.ctx.stroke();
+  }
 
-  drawLeftLeg() {}
+  drawRightArm() {
+    ctx.moveTo(180,175); 
+	  ctx.lineTo(218,167); 
+	  ctx.stroke(); 
+  }
 
-  drawRightLeg() {}
+  drawLeftLeg() {
+    ctx.moveTo(180,245); 
+	  ctx.lineTo(145,270); 
+	  ctx.stroke(); 
+  }
+
+  drawRightLeg() {
+    ctx.moveTo(180,245); 
+	  ctx.lineTo(215,270); 
+	  ctx.stroke();
+  }
 }
