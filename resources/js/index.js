@@ -55,12 +55,41 @@ try {
   //      2. disable the guessButton
   //      3. show the resetGame button
   // if the game is won or lost, show an alert.
-  guessForm.addEventListener(`submit`, function (e) {});
+  guessForm.addEventListener(`submit`, function (e) {
+
+    var guessInput1 = guessInput.value; 
+    game.guess(guessInput1);
+
+    wordHolderText.innerText = game.getWordHolderText();
+
+    guessesText.innerText = game.getGuessesText();
+
+    guessInput.value = "";
+
+    if(game.isOver == true)
+    {
+      guessInput.setAttribute("disabled", "disabled");
+      resetGame.removeAttribute("hidden");
+
+      if(!game.didWin)
+      {
+        alert("You Lost.");
+      }
+      else{
+        alert("You Won!!!!!!!");
+      }
+
+    }
+
+  });
 
   // add a click Event Listener to the resetGame button
   //    show the startWrapper
   //    hide the gameWrapper
-  resetGame.addEventListener(`click`, function (e) {});
+  resetGame.addEventListener(`click`, function (e) {
+    startWrapper.removeAttribute("hidden");
+    gameWrapper.setAttribute("hidden");
+  });
 } catch (error) {
   console.error(error);
   alert(error);
