@@ -36,10 +36,9 @@ try {
     game.start(difficulty, function() {
       startWrapper.setAttribute('hidden');
       gameWrapper.removeAttribute('hidden');
-      wordHolderText.innerText = game.getWordHolderText()
+      wordHolderText.innerText = game.getWordHolderText();
+      guessesText.innerText = game.getGuessesText();
     });
-
-
 
   });
 
